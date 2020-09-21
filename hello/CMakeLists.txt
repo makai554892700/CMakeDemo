@@ -9,7 +9,13 @@ file(GLOB ODA_INCLUDE_DIRS
 
 include_directories(${ODA_INCLUDE_DIRS})
 
-add_library(hello ${CMAKE_CURRENT_SOURCE_DIR}/src/hello.cpp)
+add_library(hello SHARED
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/hello.cpp
+        )
+
+add_library(hello_static STATIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/hello.cpp
+        )
 
 add_executable(main
         main.cpp

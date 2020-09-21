@@ -7,7 +7,13 @@ file(GLOB ODA_INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/inc
         )
 
-add_library(world ${CMAKE_CURRENT_SOURCE_DIR}/src/world.cpp)
+add_library(world SHARED
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/world.cpp
+        )
+
+add_library(world_static STATIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/world.cpp
+        )
 
 include_directories(${ODA_INCLUDE_DIRS})
 

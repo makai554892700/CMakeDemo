@@ -3,4 +3,6 @@ cmake-build-debug
 build
 */build
 .idea
-
+hello/lib
+world/lib
+hello_world/lib
