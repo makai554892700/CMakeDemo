@@ -45,9 +45,8 @@ add_executable(ctemp
         )
 
 target_link_libraries(ctemp
-        -Wl,--start-group
+        PRIVATE
         ${ODA_SO_FILES}
-        -Wl,--end-group
         )
 
 

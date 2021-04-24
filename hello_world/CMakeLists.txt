@@ -4,11 +4,12 @@ project(hello_world)
 file(GLOB SOURCE_INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/../hello/inc
         ${CMAKE_CURRENT_SOURCE_DIR}/../world/inc
-        ${CMAKE_CURRENT_SOURCE_DIR}/../hello_world/inc
+        ${CMAKE_CURRENT_SOURCE_DIR}/inc
         )
 
 file(GLOB SOURCE_SO_DIRS
-        ${CMAKE_CURRENT_SOURCE_DIR}/lib
+        ${CMAKE_CURRENT_SOURCE_DIR}/../hello/lib
+        ${CMAKE_CURRENT_SOURCE_DIR}/../world/lib
         )
 
 include_directories(
@@ -19,44 +20,31 @@ link_directories(
         ${SOURCE_SO_DIRS}
 )
 
+#add_library(hello_world SHARED
+#        ${CMAKE_CURRENT_SOURCE_DIR}/src/hello_world.cpp
+#        )
+
 add_library(hello_world_static STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/hello_world.cpp
         )
 
-target_link_libraries(hello_world_static
-        PRIVATE
-        -Wl,--start-group
-        ${CMAKE_CURRENT_SOURCE_DIR}/lib/libhello_static.a
-        ${CMAKE_CURRENT_SOURCE_DIR}/lib/libworld_static.a
-        -Wl,--end-group
-        -static
-        )
-
-add_library(hello_world SHARED
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/hello_world.cpp
-        )
-
-#target_link_libraries(hello_world
-#        -Wl,--start-group
-#        -Wl,-Bstatic
-#        ${CMAKE_CURRENT_SOURCE_DIR}/lib/libworld_static.a
-#        -Wl,-Bdynamic
-#        ${CMAKE_CURRENT_SOURCE_DIR}/lib/libhello.so
-#        -static -Wl,-Bdynamic,-lgcc_s,-Bstatic
-#        -Wl,--end-group
-#        )
-
-target_link_libraries(hello_world
-        -Wl,--start-group
-        ${CMAKE_CURRENT_SOURCE_DIR}/lib/libhello.so
-        ${CMAKE_CURRENT_SOURCE_DIR}/lib/libworld.so
-        -Wl,--end-group
-        )
+if (CMAKE_SYSTEM_NAME MATCHES "Windows")
+    message("system is windows.")
+    file(GLOB SOURCE_SO_FILES
+            ${CMAKE_CURRENT_SOURCE_DIR}/../hello/lib/*.lib
+            ${CMAKE_CURRENT_SOURCE_DIR}/../world/lib/*.lib
+            )
+else ()
+    file(GLOB SOURCE_SO_FILES
+            ${CMAKE_CURRENT_SOURCE_DIR}/../hello/lib/*.a
+            ${CMAKE_CURRENT_SOURCE_DIR}/../world/lib/*.a
+            )
+endif ()
 
 add_executable(main main.cpp)
 
 target_link_libraries(main
-        -Wl,--start-group
-        hello_world
-        -Wl,--end-group
+        PRIVATE
+        ${SOURCE_SO_FILES}
+        hello_world_static
         )

@@ -7,9 +7,9 @@ file(GLOB ODA_INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/inc
         )
 
-add_library(world SHARED
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/world.cpp
-        )
+#add_library(world SHARED
+#        ${CMAKE_CURRENT_SOURCE_DIR}/src/world.cpp
+#        )
 
 add_library(world_static STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/world.cpp
@@ -23,5 +23,5 @@ add_executable(main
 
 target_link_libraries(main
         PRIVATE
-        world
+        world_static
         )
